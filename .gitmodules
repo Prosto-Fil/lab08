@@ -7,3 +7,6 @@
 [submodule "third-party/echo"]
 	path = third-party/echo
 	url = https://github.com/bmstu-iu8-cpp-sem-3/lab-07-grpc-service
+[submodule "third-party/suggest"]
+	path = third-party/suggest
+	url = https://github.com/Prosto-Fil/lab07
