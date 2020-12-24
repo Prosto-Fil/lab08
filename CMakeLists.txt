@@ -16,7 +16,7 @@ include("tools/gate/cmake/HunterGate.cmake")
 HunterGate(
   URL "https://github.com/cpp-pm/hunter/archive/v0.23.278.tar.gz"
   SHA1 "35fa55bc1dfcf9f4d7264f8bb26cd1759ce1ae07"
-  # FILEPATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake"
+  FILEPATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake"
 )
 
 project(suggestclient)
@@ -77,3 +77,33 @@ target_include_directories(grpc_client PRIVATE "${API_GENERATED_DIR}")
 
 target_link_libraries(grpc_client
   gRPC::grpc++ gRPC::grpc++_reflection)
+
+if ("${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
+    add_executable(tests
+            # TODO: enum your files and delete this comment
+            ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp)
+
+    target_link_libraries(tests PRIVATE GTest::gtest_main lab07)
+
+    enable_testing()
+    add_test(NAME unit_tests COMMAND tests)
+endif()
+
+if(BUILD_COVERAGE)
+    function(ENABLE_PROJECT_COVERAGE PROJECT)
+        target_compile_options(${PROJECT} PRIVATE --coverage)
+        target_link_libraries(${PROJECT} PRIVATE --coverage)
+        add_coverage(${PROJECT})
+    endfunction()
+
+    set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+    find_package(codecov)
+    # TODO: change template word to project name and delete this comment
+    enable_project_coverage(grpc_client)
+    if ("${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
+        enable_project_coverage(tests)
+    endif()
+    list(APPEND LCOV_REMOVE_PATTERNS "'${PROJECT_SOURCE_DIR}/tests/*'")
+    coverage_evaluate()
+endif()
