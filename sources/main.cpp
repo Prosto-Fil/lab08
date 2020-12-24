@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
   SuggestResponse response;
   ClientContext context;
   SuggestRequest request;
-  request.set_input("hel");
+  request.set_input(argv[1]);
   Status status = client->Answer(&context, request, &response);
 
   if (status.ok()) {
