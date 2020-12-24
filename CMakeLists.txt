@@ -63,7 +63,7 @@ add_executable(grpc_client
 
 target_include_directories(grpc_client PRIVATE "${API_GENERATED_DIR}")
 
-target_link_libraries(grpc_client
+target_link_libraries(grpc_client PRIVATE
   gRPC::grpc++ gRPC::grpc++_reflection)
 
 add_executable(tests
