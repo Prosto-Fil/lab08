@@ -75,7 +75,7 @@ add_dependencies(grpc_client generate)
 
 target_include_directories(grpc_client PRIVATE "${API_GENERATED_DIR}")
 
-target_link_libraries(grpc_client
+target_link_libraries(grpc_client PRIVATE
   gRPC::grpc++ gRPC::grpc++_reflection)
 
 if ("${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
