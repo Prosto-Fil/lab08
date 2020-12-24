@@ -66,16 +66,14 @@ target_include_directories(grpc_client PRIVATE "${API_GENERATED_DIR}")
 target_link_libraries(grpc_client
   gRPC::grpc++ gRPC::grpc++_reflection)
 
-if ("${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
-    add_executable(tests
-            # TODO: enum your files and delete this comment
-            ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp)
+add_executable(tests
+    # TODO: enum your files and delete this comment
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp)
 
-    target_link_libraries(tests PRIVATE GTest::gtest_main lab07)
+target_link_libraries(tests GTest::gtest_main)
 
-    enable_testing()
-    add_test(NAME unit_tests COMMAND tests)
-endif()
+enable_testing()
+add_test(NAME unit_tests COMMAND tests)
 
 if(BUILD_COVERAGE)
     function(ENABLE_PROJECT_COVERAGE PROJECT)
