@@ -30,8 +30,6 @@ find_package(GTest CONFIG REQUIRED)
 hunter_add_package(gRPC)
 find_package(gRPC CONFIG REQUIRED)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third-party/suggest)
-
 set(API_GENERATED_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/suggest/ccpkg)
 
 set(PROTO_GENERATED_SOURCES
@@ -58,24 +56,14 @@ set(PROTO_GENERATED_GRPC_HEADERS
   "${API_GENERATED_DIR}/google/api/http.grpc.pb.h"
   "${API_GENERATED_DIR}/google/rpc/status.grpc.pb.h")
 
-set_source_files_properties(
-    ${PROTO_GENERATED_SOURCES}
-    ${PROTO_GENERATED_HEADERS}
-    ${PROTO_GENERATED_GRPC_SOURCES}
-    ${PROTO_GENERATED_GRPC_HEADERS}
-    PROPERTIES GENERATED TRUE
-)
-
 add_executable(grpc_client
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/main.cpp
   ${PROTO_GENERATED_SOURCES}
   ${PROTO_GENERATED_GRPC_SOURCES})
 
-add_dependencies(grpc_client generate)
-
 target_include_directories(grpc_client PRIVATE "${API_GENERATED_DIR}")
 
-target_link_libraries(grpc_client PRIVATE
+target_link_libraries(grpc_client
   gRPC::grpc++ gRPC::grpc++_reflection)
 
 if ("${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
